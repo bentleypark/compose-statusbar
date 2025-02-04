@@ -40,7 +40,7 @@ Add the dependency to your project:
 
 ```kotlin
 dependencies {
-    implementation("io.github.bentleypark:compose-statusbar:1.0.3")
+    implementation("io.github.bentleypark:compose-statusbar:1.0.4")
 }
 ```
 
