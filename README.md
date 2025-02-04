@@ -1,16 +1,29 @@
 # Compose StatusBar
 
-A Kotlin Multiplatform library for managing status bar appearance in Compose applications. Supports both Android and iOS platforms.
+A Kotlin Multiplatform library for managing status bar appearance in Compose applications. While
+Android's `enableEdgeToEdge` can handle status bar management, iOS lacks a direct equivalent. This
+library provides a unified solution for both platforms, making status bar management seamless across
+Android and iOS.
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.bentleypark/compose-statusbar.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.bentleypark/compose-statusbar)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Screenshot
+
+| Default iOS Status Bar                                                                    | Custom Status Bar                                                                       |
+|-------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| <img src=".github/screenshots/ios_default.png" alt="iOS Default Status Bar" width="200"/> | <img src=".github/screenshots/ios_custom.png" alt="iOS Custom Status Bar" width="200"/> |
+
+*iOS status bar customization with compose-statusbar*
+
 ## Features
 
+- Cross-platform status bar management (Android & iOS)
+    - Android: Enhanced control beyond `enableEdgeToEdge`
+    - iOS: Full status bar customization support (not available in native SwiftUI)
 - Easy status bar color configuration
-- Platform-specific implementations (Android & iOS)
 - Compose Multiplatform support
-- Safe area handling
+- Safe area handling for edge-to-edge designs
 
 ## Installation
 
@@ -21,6 +34,15 @@ dependencies {
     implementation("io.github.bentleypark:compose-statusbar:1.0.1")
 }
 ```
+
+## Why This Library?
+
+While Android provides `enableEdgeToEdge()` for status bar management, iOS lacks equivalent
+functionality in SwiftUI. This library bridges that gap by offering:
+
+- Unified API across platforms
+- iOS status bar customization without UIKit complexity
+- Seamless integration with Compose Multiplatform
 
 ## Usage
 
@@ -40,7 +62,8 @@ fun MyScreen() {
 
 ## Sample App
 
-Check out the sample app in the `sample` directory for comprehensive examples demonstrating various features and implementation patterns.
+Check out the sample app in the `sample` directory for comprehensive examples demonstrating various
+features and implementation patterns.
 
 ## License
 
