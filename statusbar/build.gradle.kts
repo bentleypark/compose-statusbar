@@ -90,12 +90,12 @@ mavenPublishing {
 
     val artifactId = "compose-statusbar"
 
-    coordinates("io.github.bentleypark", artifactId, "1.0.1")
+    coordinates("io.github.bentleypark", artifactId, "1.0.2")
 
     pom {
         name.set(artifactId)
         description.set("A KMP library for Status bar configuration in Compose")
-        inceptionYear.set("2024")
+        inceptionYear.set("2025")
         url.set("https://github.com/bentleypark/compose-statusbar")
         licenses {
             license {

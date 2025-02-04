@@ -10,11 +10,19 @@ Android and iOS.
 
 ## Screenshot
 
+### iOS
+
 | Default iOS Status Bar                                                            | Custom Status Bar                                                               |
 |-----------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
 | <img src="screenshots/ios_default.png" alt="iOS Default Status Bar" width="200"/> | <img src="screenshots/ios_custom.png" alt="iOS Custom Status Bar" width="200"/> |
 
-*iOS status bar customization with compose-statusbar*
+### Android
+
+| Default Android Status Bar                                                                | Custom Status Bar                                                                       |
+|-------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| <img src="screenshots/android_default.png" alt="Android Default Status Bar" width="200"/> | <img src="screenshots/android_custom.png" alt="Android Custom Status Bar" width="200"/> |
+
+*Status bar customization with compose-statusbar on both platforms*
 
 ## Features
 
@@ -31,7 +39,7 @@ Add the dependency to your project:
 
 ```kotlin
 dependencies {
-    implementation("io.github.bentleypark:compose-statusbar:1.0.1")
+    implementation("io.github.bentleypark:compose-statusbar:1.0.2")
 }
 ```
 
@@ -69,7 +77,7 @@ features and implementation patterns.
 
 MIT License
 
-Copyright (c) 2024 Bentley Park
+Copyright (c) 2025 Bentley Park
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

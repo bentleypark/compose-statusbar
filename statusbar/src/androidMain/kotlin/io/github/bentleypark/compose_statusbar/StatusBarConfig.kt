@@ -1,7 +1,6 @@
 package io.github.bentleypark.compose_statusbar
 
 import android.app.Activity
-import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.graphics.Color
@@ -16,32 +15,27 @@ actual fun ConfigureStatusBar(color: Color, onDispose: (() -> Unit)?) {
     val window = (context as Activity).window
     val isDark = !color.luminance().isLight()
 
-    val originalStatusBarColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars
-    } else {
-        @Suppress("DEPRECATION")
-        window.statusBarColor
-    }
+    val controller = WindowCompat.getInsetsController(window, view)
+    val originalAppearance = controller.isAppearanceLightStatusBars
 
     DisposableEffect(color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            WindowCompat.getInsetsController(window, view).apply {
-                isAppearanceLightStatusBars = !isDark
-            }
-        } else {
-            @Suppress("DEPRECATION")
-            window.statusBarColor = color.toArgb()
-        }
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        // 상태바 색상 설정
+        @Suppress("DEPRECATION")
+        window.statusBarColor = color.toArgb()
+
+        // 상태바 아이콘 색상 설정
+        controller.isAppearanceLightStatusBars = !isDark
 
         onDispose {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                WindowCompat.getInsetsController(window, view).apply {
-                    isAppearanceLightStatusBars = originalStatusBarColor as Boolean
-                }
-            } else {
-                @Suppress("DEPRECATION")
-                window.statusBarColor = originalStatusBarColor as Int
-            }
+            WindowCompat.setDecorFitsSystemWindows(window, true)
+
+            // 원래 상태로 복원
+            controller.isAppearanceLightStatusBars = originalAppearance
+            @Suppress("DEPRECATION")
+            window.statusBarColor = Color.Transparent.toArgb()
+
             onDispose?.invoke()
         }
     }
