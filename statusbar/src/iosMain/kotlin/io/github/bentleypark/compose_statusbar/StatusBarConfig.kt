@@ -34,6 +34,7 @@ actual fun ConfigureStatusBar(
             tag = OVERLAY_VIEW_TAG
             setAutoresizingMask(UIViewAutoresizingFlexibleWidth or UIViewAutoresizingFlexibleHeight)
             clipsToBounds = false
+            userInteractionEnabled = false  // 터치 이벤트를 하위 뷰로 전달
         }
 
         // Create status bar view
@@ -45,6 +46,7 @@ actual fun ConfigureStatusBar(
                 alpha = color.alpha.toDouble()
             )
             translatesAutoresizingMaskIntoConstraints = false
+            userInteractionEnabled = false  // status bar도 터치 이벤트 비활성화
         }
 
         // Add views to hierarchy
