@@ -10,9 +10,9 @@ Android and iOS.
 
 ## Screenshot
 
-| Default iOS Status Bar                                                                    | Custom Status Bar                                                                       |
-|-------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| <img src=".github/screenshots/ios_default.png" alt="iOS Default Status Bar" width="200"/> | <img src=".github/screenshots/ios_custom.png" alt="iOS Custom Status Bar" width="200"/> |
+| Default iOS Status Bar                                                            | Custom Status Bar                                                               |
+|-----------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| <img src="screenshots/ios_default.png" alt="iOS Default Status Bar" width="200"/> | <img src="screenshots/ios_custom.png" alt="iOS Custom Status Bar" width="200"/> |
 
 *iOS status bar customization with compose-statusbar*
 
