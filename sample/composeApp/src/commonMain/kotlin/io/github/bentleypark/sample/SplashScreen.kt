@@ -21,7 +21,7 @@ val GreenOrange = Color(0xFF7CD685)
 @Composable
 fun SplashScreen(onSplashComplete: () -> Unit) {
 
-    ConfigureStatusBar(color = GreenOrange)
+    ConfigureStatusBar(color = GreenOrange, bottomBarColor = GreenOrange)
 
     LaunchedEffect(Unit) {
         delay(2000)

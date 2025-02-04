@@ -6,5 +6,6 @@ import androidx.compose.ui.graphics.Color
 @Composable
 expect fun ConfigureStatusBar(
     color: Color,
+    bottomBarColor: Color? = null,
     onDispose: (() -> Unit)? = null
 )

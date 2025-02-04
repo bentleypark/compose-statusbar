@@ -90,7 +90,7 @@ mavenPublishing {
 
     val artifactId = "compose-statusbar"
 
-    coordinates("io.github.bentleypark", artifactId, "1.0.2")
+    coordinates("io.github.bentleypark", artifactId, "1.0.3")
 
     pom {
         name.set(artifactId)

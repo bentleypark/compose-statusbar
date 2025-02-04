@@ -29,7 +29,8 @@ Android and iOS.
 - Cross-platform status bar management (Android & iOS)
     - Android: Enhanced control beyond `enableEdgeToEdge`
     - iOS: Full status bar customization support (not available in native SwiftUI)
-- Easy status bar color configuration
+- Easy status bar and navigation/tab bar color configuration
+- Independent control of top and bottom system bars
 - Compose Multiplatform support
 - Safe area handling for edge-to-edge designs
 
@@ -39,7 +40,7 @@ Add the dependency to your project:
 
 ```kotlin
 dependencies {
-    implementation("io.github.bentleypark:compose-statusbar:1.0.2")
+    implementation("io.github.bentleypark:compose-statusbar:1.0.3")
 }
 ```
 
@@ -54,11 +55,12 @@ functionality in SwiftUI. This library bridges that gap by offering:
 
 ## Usage
 
-Basic usage example:
+Basic usage examples:
 
 ```kotlin
+// Basic status bar configuration
 @Composable
-fun MyScreen() {
+fun BasicExample() {
     ConfigureStatusBar(
         color = Color.Green,
         onDispose = { /* Optional cleanup */ }
@@ -66,7 +68,22 @@ fun MyScreen() {
 
     // Your screen content
 }
+
+// Status bar with bottom bar configuration
+@Composable
+fun FullSystemBarsExample() {
+    ConfigureStatusBar(
+        color = Color.Green,                // Status bar color
+        bottomBarColor = Color.White,       // Navigation/Tab bar color
+        onDispose = { /* Optional cleanup */ }
+    )
+
+    // Your screen content
+}
 ```
+
+Note: `bottomBarColor` is optional. When not specified, the bottom bar (navigation bar on Android,
+tab bar on iOS) remains in its default state.
 
 ## Sample App
 

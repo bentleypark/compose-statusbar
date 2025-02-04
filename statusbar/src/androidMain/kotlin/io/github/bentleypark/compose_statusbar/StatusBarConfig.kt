@@ -9,32 +9,45 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 @Composable
-actual fun ConfigureStatusBar(color: Color, onDispose: (() -> Unit)?) {
+actual fun ConfigureStatusBar(
+    color: Color,
+    bottomBarColor: Color?,
+    onDispose: (() -> Unit)?
+) {
     val view = LocalView.current
     val context = view.context
     val window = (context as Activity).window
     val isDark = !color.luminance().isLight()
 
     val controller = WindowCompat.getInsetsController(window, view)
-    val originalAppearance = controller.isAppearanceLightStatusBars
+    val originalStatusBarAppearance = controller.isAppearanceLightStatusBars
+    val originalNavigationBarAppearance = controller.isAppearanceLightNavigationBars
 
-    DisposableEffect(color) {
+    DisposableEffect(color, bottomBarColor) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        // 상태바 색상 설정
         @Suppress("DEPRECATION")
         window.statusBarColor = color.toArgb()
 
-        // 상태바 아이콘 색상 설정
         controller.isAppearanceLightStatusBars = !isDark
+
+        bottomBarColor?.let { barColor ->
+            val isBarDark = !barColor.luminance().isLight()
+            @Suppress("DEPRECATION")
+            window.navigationBarColor = barColor.toArgb()
+            controller.isAppearanceLightNavigationBars = !isBarDark
+        }
 
         onDispose {
             WindowCompat.setDecorFitsSystemWindows(window, true)
 
-            // 원래 상태로 복원
-            controller.isAppearanceLightStatusBars = originalAppearance
+            controller.isAppearanceLightStatusBars = originalStatusBarAppearance
+            controller.isAppearanceLightNavigationBars = originalNavigationBarAppearance
+
             @Suppress("DEPRECATION")
             window.statusBarColor = Color.Transparent.toArgb()
+            @Suppress("DEPRECATION")
+            window.navigationBarColor = Color.Transparent.toArgb()
 
             onDispose?.invoke()
         }

@@ -5,10 +5,16 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.graphics.Color
 import platform.UIKit.UIApplication
 import platform.UIKit.UIColor
+import platform.UIKit.UINavigationController
+import platform.UIKit.UITabBarController
 
 @Composable
-actual fun ConfigureStatusBar(color: Color, onDispose: (() -> Unit)?) {
-    DisposableEffect(color) {
+actual fun ConfigureStatusBar(
+    color: Color,
+    bottomBarColor: Color?,
+    onDispose: (() -> Unit)?
+) {
+    DisposableEffect(color, bottomBarColor) {
         val window = UIApplication.sharedApplication.keyWindow
         val originalBackgroundColor = window?.rootViewController?.view?.backgroundColor
 
@@ -21,8 +27,32 @@ actual fun ConfigureStatusBar(color: Color, onDispose: (() -> Unit)?) {
 
         window?.rootViewController?.view?.backgroundColor = uiColor
 
+        bottomBarColor?.let { barColor ->
+            val uiBarColor = UIColor(
+                red = barColor.red.toDouble(),
+                green = barColor.green.toDouble(),
+                blue = barColor.blue.toDouble(),
+                alpha = barColor.alpha.toDouble()
+            )
+
+            (window?.rootViewController as? UITabBarController)?.let { tabController ->
+                tabController.tabBar.backgroundColor = uiBarColor
+            }
+
+            (window?.rootViewController as? UINavigationController)?.let { navController ->
+                navController.toolbar.backgroundColor = uiBarColor
+            }
+        }
+
         onDispose {
             window?.rootViewController?.view?.backgroundColor = originalBackgroundColor
+
+            if (bottomBarColor != null) {
+                (window?.rootViewController as? UITabBarController)?.tabBar?.backgroundColor = null
+                (window?.rootViewController as? UINavigationController)?.toolbar?.backgroundColor =
+                    null
+            }
+
             onDispose?.invoke()
         }
     }
