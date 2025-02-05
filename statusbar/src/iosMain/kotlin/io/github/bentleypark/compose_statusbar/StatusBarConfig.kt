@@ -7,10 +7,8 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import platform.UIKit.NSLayoutConstraint
 import platform.UIKit.UIApplication
 import platform.UIKit.UIColor
-import platform.UIKit.UINavigationController
 import platform.UIKit.UIStatusBarStyleDarkContent
 import platform.UIKit.UIStatusBarStyleLightContent
-import platform.UIKit.UITabBarController
 import platform.UIKit.UIView
 import platform.UIKit.UIViewAutoresizingFlexibleHeight
 import platform.UIKit.UIViewAutoresizingFlexibleWidth
@@ -28,16 +26,16 @@ actual fun ConfigureStatusBar(
         val rootVC = window.rootViewController!!
         val layoutGuide = rootVC.view.safeAreaLayoutGuide
 
-        // Create overlay view for the entire screen
+        // Create an overlay view that covers the entire screen
         val overlayView = UIView(frame = rootVC.view.bounds).apply {
             backgroundColor = UIColor.clearColor
             tag = OVERLAY_VIEW_TAG
             setAutoresizingMask(UIViewAutoresizingFlexibleWidth or UIViewAutoresizingFlexibleHeight)
             clipsToBounds = false
-            userInteractionEnabled = false  // 터치 이벤트를 하위 뷰로 전달
+            userInteractionEnabled = false // Pass touch events to underlying views
         }
 
-        // Create status bar view
+        // Create a view for the status bar area
         val statusBarView = UIView().apply {
             backgroundColor = UIColor(
                 red = color.red.toDouble(),
@@ -46,14 +44,13 @@ actual fun ConfigureStatusBar(
                 alpha = color.alpha.toDouble()
             )
             translatesAutoresizingMaskIntoConstraints = false
-            userInteractionEnabled = false  // status bar도 터치 이벤트 비활성화
+            userInteractionEnabled = false
         }
 
-        // Add views to hierarchy
         overlayView.addSubview(statusBarView)
         rootVC.view.addSubview(overlayView)
 
-        // Setup constraints for status bar view
+        // Set up auto layout constraints for status bar view
         NSLayoutConstraint.activateConstraints(
             listOf(
                 statusBarView.topAnchor.constraintEqualToAnchor(overlayView.topAnchor),
@@ -69,7 +66,7 @@ actual fun ConfigureStatusBar(
             animated = true
         )
 
-        // Handle bottom bar color if provided
+        // Apply color to home indicator area if bottom bar color is provided
         bottomBarColor?.let { barColor ->
             val uiBarColor = UIColor(
                 red = barColor.red.toDouble(),
@@ -78,32 +75,36 @@ actual fun ConfigureStatusBar(
                 alpha = barColor.alpha.toDouble()
             )
 
-            (rootVC as? UITabBarController)?.let { tabController ->
-                tabController.tabBar.backgroundColor = uiBarColor
+            // Create a view to cover the home indicator area (below safe area)
+            val bottomBarView = UIView().apply {
+                backgroundColor = uiBarColor
+                translatesAutoresizingMaskIntoConstraints = false
+                userInteractionEnabled = false
             }
+            overlayView.addSubview(bottomBarView)
 
-            (rootVC as? UINavigationController)?.let { navController ->
-                navController.toolbar.backgroundColor = uiBarColor
-            }
+            NSLayoutConstraint.activateConstraints(
+                listOf(
+                    bottomBarView.topAnchor.constraintEqualToAnchor(layoutGuide.bottomAnchor),
+                    bottomBarView.leadingAnchor.constraintEqualToAnchor(overlayView.leadingAnchor),
+                    bottomBarView.trailingAnchor.constraintEqualToAnchor(overlayView.trailingAnchor),
+                    bottomBarView.bottomAnchor.constraintEqualToAnchor(overlayView.bottomAnchor)
+                )
+            )
         }
 
         onDispose {
             // Remove overlay view
             rootVC.view.viewWithTag(OVERLAY_VIEW_TAG)?.removeFromSuperview()
-
-            // Reset bottom bar colors if they were modified
-            if (bottomBarColor != null) {
-                (rootVC as? UITabBarController)?.tabBar?.backgroundColor = null
-                (rootVC as? UINavigationController)?.toolbar?.backgroundColor = null
-            }
-
             onDispose?.invoke()
         }
     }
 }
 
+// Unique tag to identify and remove overlay view
 private const val OVERLAY_VIEW_TAG: Long = 9999L
 
+// Calculate color luminance for optimal text color
 private fun Color.luminance(): Float {
     val red = red.coerceIn(0f, 1f)
     val green = green.coerceIn(0f, 1f)
